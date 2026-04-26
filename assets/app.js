@@ -11,6 +11,7 @@
     { key: "dashboard", label: "Dashboard", path: "" },
     { key: "master-designs", label: "Master Designs", path: "modules/master-designs/" },
     { key: "stone-cost-tables", label: "Stone Costs", path: "modules/stone-cost-tables/" },
+    { key: "stone-setup", label: "Stone Setup", path: "modules/stone-setup/" },
     { key: "labour-cost-templates", label: "Labour Costs", path: "modules/labour-cost-templates/" },
     { key: "product-development", label: "Product Development", path: "modules/product-development/" },
     { key: "specifications", label: "Specifications", path: "modules/specifications/" },

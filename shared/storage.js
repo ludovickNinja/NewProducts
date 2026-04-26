@@ -1,8 +1,4 @@
-/* NewProducts - thin wrapper around localStorage
- *
- * Each module is identified by a key (e.g. "masterDesigns") and stores its
- * full collection as a JSON array. On first load, sample data is seeded.
- */
+/* NewProducts - thin wrapper around localStorage */
 (function (global) {
   "use strict";
 
@@ -12,37 +8,41 @@
     return PREFIX + key;
   }
 
+  function cloneValue(value) {
+    if (value === undefined) return undefined;
+    return JSON.parse(JSON.stringify(value));
+  }
+
   function load(key) {
-    var seeded = (global.SAMPLE_DATA && global.SAMPLE_DATA[key]) || [];
+    var seeded = global.SAMPLE_DATA ? global.SAMPLE_DATA[key] : undefined;
     var raw;
     try {
       raw = localStorage.getItem(storageKey(key));
     } catch (e) {
-      return seeded.slice();
+      return cloneValue(seeded !== undefined ? seeded : []);
     }
+
     if (raw === null) {
-      // First visit: seed and return.
-      save(key, seeded);
-      return seeded.slice();
+      save(key, seeded !== undefined ? seeded : []);
+      return cloneValue(seeded !== undefined ? seeded : []);
     }
+
     try {
-      var parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : seeded.slice();
+      return JSON.parse(raw);
     } catch (e) {
-      return seeded.slice();
+      return cloneValue(seeded !== undefined ? seeded : []);
     }
   }
 
-  function save(key, list) {
+  function save(key, value) {
     try {
-      localStorage.setItem(storageKey(key), JSON.stringify(list || []));
-    } catch (e) {
-      // Quota or disabled storage - silently ignore for the prototype.
-    }
+      localStorage.setItem(storageKey(key), JSON.stringify(value));
+    } catch (e) {}
   }
 
   function add(key, item) {
     var list = load(key);
+    if (!Array.isArray(list)) list = [];
     list.push(item);
     save(key, list);
     return item;
@@ -50,6 +50,7 @@
 
   function update(key, idField, idValue, updates) {
     var list = load(key);
+    if (!Array.isArray(list)) return null;
     for (var i = 0; i < list.length; i++) {
       if (list[i][idField] === idValue) {
         list[i] = Object.assign({}, list[i], updates);
@@ -61,33 +62,24 @@
   }
 
   function remove(key, idField, idValue) {
-    var list = load(key).filter(function (row) {
-      return row[idField] !== idValue;
-    });
-    save(key, list);
-    return list;
+    var list = load(key);
+    if (!Array.isArray(list)) return list;
+    var next = list.filter(function (row) { return row[idField] !== idValue; });
+    save(key, next);
+    return next;
   }
 
   function reset(key) {
-    var seeded = (global.SAMPLE_DATA && global.SAMPLE_DATA[key]) || [];
-    save(key, seeded);
-    return seeded.slice();
+    var seeded = global.SAMPLE_DATA ? global.SAMPLE_DATA[key] : undefined;
+    var value = cloneValue(seeded !== undefined ? seeded : []);
+    save(key, value);
+    return value;
   }
 
   function resetAll() {
     if (!global.SAMPLE_DATA) return;
-    Object.keys(global.SAMPLE_DATA).forEach(function (k) {
-      reset(k);
-    });
+    Object.keys(global.SAMPLE_DATA).forEach(function (k) { reset(k); });
   }
 
-  global.Storage = {
-    load: load,
-    save: save,
-    add: add,
-    update: update,
-    remove: remove,
-    reset: reset,
-    resetAll: resetAll
-  };
+  global.Storage = { load: load, save: save, add: add, update: update, remove: remove, reset: reset, resetAll: resetAll };
 })(window);

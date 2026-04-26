@@ -6,298 +6,222 @@
 (function (global) {
   "use strict";
 
+  var stoneSetup = {
+    categories: [
+      { key: "diamond", label: "Diamond" },
+      { key: "gemstone", label: "Gemstone" },
+      { key: "moissanite", label: "Moissanite" },
+      { key: "cz", label: "CZ" }
+    ],
+    types: [
+      {
+        key: "natural-diamond",
+        label: "Natural Diamond",
+        category: "diamond",
+        shapeSet: "diamond-shapes",
+        columnSet: "natural-diamond-qualities",
+        sizeFormat: "round-mm",
+        costingMode: "matrix"
+      },
+      {
+        key: "lab-diamond",
+        label: "Lab Diamond",
+        category: "diamond",
+        shapeSet: "diamond-shapes",
+        columnSet: "lab-diamond-qualities",
+        sizeFormat: "round-mm",
+        costingMode: "matrix"
+      },
+      {
+        key: "sapphire",
+        label: "Sapphire",
+        category: "gemstone",
+        shapeSet: "gemstone-shapes",
+        columnSet: "gemstone-qualities",
+        sizeFormat: "length-width",
+        costingMode: "matrix"
+      }
+    ],
+    columnSets: [
+      {
+        key: "natural-diamond-qualities",
+        label: "Natural Diamond Qualities",
+        columns: ["I1", "SI3-I1", "SI2", "SI1", "VS1"]
+      },
+      {
+        key: "lab-diamond-qualities",
+        label: "Lab Diamond Qualities",
+        columns: ["Lab VS1"]
+      },
+      {
+        key: "gemstone-qualities",
+        label: "Gemstone Qualities",
+        columns: ["Standard", "Premium", "AAA"]
+      }
+    ],
+    shapeSets: [
+      {
+        key: "diamond-shapes",
+        label: "Diamond Shapes",
+        shapes: ["Round", "Oval", "Cushion", "Pear", "Emerald", "Marquise", "Princess", "Baguette"]
+      },
+      {
+        key: "gemstone-shapes",
+        label: "Gemstone Shapes",
+        shapes: ["Round", "Oval", "Cushion", "Pear", "Emerald"]
+      }
+    ],
+    sizeFormats: [
+      {
+        key: "round-mm",
+        label: "Diameter in mm",
+        fields: ["diameterMm"]
+      },
+      {
+        key: "length-width",
+        label: "Length x Width",
+        fields: ["lengthMm", "widthMm"]
+      },
+      {
+        key: "sieve-mm",
+        label: "Sieve + mm equivalent",
+        fields: ["sieve", "diameterMm"]
+      }
+    ],
+    statusValues: [
+      { key: "priced", label: "Priced" },
+      { key: "missing", label: "Missing" },
+      { key: "not-used", label: "Not Used" },
+      { key: "unavailable", label: "Unavailable" },
+      { key: "to-confirm", label: "To Confirm" }
+    ]
+  };
+
+  var markupProfiles = {
+    "default-diamond": { label: "Default Diamond", markup1: 1.5, markup2: 2 },
+    "lab-diamond": { label: "Lab Diamond", markup1: 1.5, markup2: 2 },
+    gemstone: { label: "Gemstone", markup1: 2, markup2: 2.5 }
+  };
+
+  var stoneCosts = [
+    {
+      type: "natural-diamond",
+      shape: "Round",
+      size: { diameterMm: 1, label: "1.00 mm" },
+      weightCt: 0.005,
+      oneOfKind: "standard",
+      purchasable: false,
+      markupProfile: "default-diamond",
+      costs: { I1: 210, "SI3-I1": null, SI2: 235, SI1: 260, VS1: 285 },
+      status: { I1: "priced", "SI3-I1": "missing", SI2: "priced", SI1: "priced", VS1: "priced" },
+      note: ""
+    },
+    {
+      type: "natural-diamond",
+      shape: "Round",
+      size: { diameterMm: 1.1, label: "1.10 mm" },
+      weightCt: 0.006,
+      oneOfKind: "standard",
+      purchasable: true,
+      markupProfile: "default-diamond",
+      costs: { I1: 265, "SI3-I1": 250, SI2: 280, SI1: 300, VS1: null },
+      status: { I1: "priced", "SI3-I1": "priced", SI2: "priced", SI1: "priced", VS1: "to-confirm" },
+      note: "VS1 pending confirmation"
+    },
+    {
+      type: "natural-diamond",
+      shape: "Round",
+      size: { diameterMm: 1.2, label: "1.20 mm" },
+      weightCt: 0.007,
+      oneOfKind: "standard",
+      purchasable: false,
+      markupProfile: "default-diamond",
+      costs: { I1: 455, "SI3-I1": 325, SI2: 470, SI1: 490, VS1: 505 },
+      status: { I1: "priced", "SI3-I1": "priced", SI2: "priced", SI1: "priced", VS1: "priced" },
+      note: ""
+    },
+    {
+      type: "natural-diamond",
+      shape: "Round",
+      size: { diameterMm: 1.3, label: "1.30 mm" },
+      weightCt: 0.009,
+      oneOfKind: "standard",
+      purchasable: true,
+      markupProfile: "default-diamond",
+      costs: { I1: 520, "SI3-I1": 460, SI2: null, SI1: null, VS1: 580 },
+      status: { I1: "priced", "SI3-I1": "priced", SI2: "missing", SI1: "not-used", VS1: "priced" },
+      note: "SI1 not used for this size"
+    },
+    {
+      type: "natural-diamond",
+      shape: "Round",
+      size: { diameterMm: 1.5, label: "1.50 mm" },
+      weightCt: 0.015,
+      oneOfKind: "calibrated",
+      purchasable: true,
+      markupProfile: "default-diamond",
+      costs: { I1: 640, "SI3-I1": 590, SI2: 690, SI1: 730, VS1: 790 },
+      status: { I1: "priced", "SI3-I1": "priced", SI2: "priced", SI1: "priced", VS1: "priced" },
+      note: ""
+    },
+    {
+      type: "natural-diamond",
+      shape: "Round",
+      size: { diameterMm: 2, label: "2.00 mm" },
+      weightCt: 0.03,
+      oneOfKind: "master-controlled",
+      purchasable: true,
+      markupProfile: "default-diamond",
+      costs: { I1: null, "SI3-I1": 1080, SI2: 1160, SI1: 1225, VS1: 1300 },
+      status: { I1: "unavailable", "SI3-I1": "priced", SI2: "priced", SI1: "priced", VS1: "priced" },
+      note: ""
+    },
+    {
+      type: "lab-diamond",
+      shape: "Round",
+      size: { diameterMm: 1.2, label: "1.20 mm" },
+      weightCt: 0.007,
+      oneOfKind: "standard",
+      purchasable: true,
+      markupProfile: "lab-diamond",
+      costs: { "Lab VS1": 140 },
+      status: { "Lab VS1": "priced" },
+      note: ""
+    },
+    {
+      type: "sapphire",
+      shape: "Oval",
+      size: { lengthMm: 6, widthMm: 4, label: "6 x 4 mm" },
+      weightCt: 0.62,
+      oneOfKind: "one-of-kind",
+      purchasable: true,
+      markupProfile: "gemstone",
+      costs: { Standard: 90, Premium: null, AAA: 210 },
+      status: { Standard: "priced", Premium: "missing", AAA: "priced" },
+      note: "Premium grade awaiting vendor quote"
+    }
+  ];
+
   var SAMPLE = {
+    stoneSetup: stoneSetup,
+    stoneCosts: stoneCosts,
+    markupProfiles: markupProfiles,
+    stoneChangeLog: [],
     masterDesigns: [
-      {
-        masterId: "MD-1001",
-        styleCode: "ENG-SOL-01",
-        designName: "Classic Solitaire",
-        collection: "Heritage",
-        category: "Engagement Ring",
-        centerStoneShape: "Round",
-        centerStoneSize: "1.00ct",
-        sideStoneConfiguration: "None",
-        approvedFactories: "Mumbai, Bangkok",
-        allowedMetals: "18K Gold, Platinum",
-        status: "Approved",
-        notes: "Flagship solitaire, four-prong head."
-      },
-      {
-        masterId: "MD-1002",
-        styleCode: "ENG-HALO-02",
-        designName: "Halo Cushion",
-        collection: "Aurora",
-        category: "Engagement Ring",
-        centerStoneShape: "Cushion",
-        centerStoneSize: "1.50ct",
-        sideStoneConfiguration: "Halo + pave shank",
-        approvedFactories: "Bangkok",
-        allowedMetals: "18K White Gold, Platinum",
-        status: "Approved",
-        notes: ""
-      },
-      {
-        masterId: "MD-1003",
-        styleCode: "EAR-STUD-03",
-        designName: "Tennis Stud",
-        collection: "Everyday",
-        category: "Earrings",
-        centerStoneShape: "Round",
-        centerStoneSize: "0.25ct",
-        sideStoneConfiguration: "Pair",
-        approvedFactories: "Mumbai",
-        allowedMetals: "14K Gold, 18K Gold",
-        status: "Draft",
-        notes: "Awaiting prong height review."
-      },
-      {
-        masterId: "MD-1004",
-        styleCode: "PEN-DROP-04",
-        designName: "Drop Pendant",
-        collection: "Aurora",
-        category: "Pendant",
-        centerStoneShape: "Pear",
-        centerStoneSize: "0.75ct",
-        sideStoneConfiguration: "Bezel set",
-        approvedFactories: "Bangkok, Jaipur",
-        allowedMetals: "18K Yellow Gold",
-        status: "Retired",
-        notes: "Replaced by MD-1010."
-      }
+      { masterId: "MD-1001", styleCode: "ENG-SOL-01", designName: "Classic Solitaire", collection: "Heritage", category: "Engagement Ring", centerStoneShape: "Round", centerStoneSize: "1.00ct", sideStoneConfiguration: "None", approvedFactories: "Mumbai, Bangkok", allowedMetals: "18K Gold, Platinum", status: "Approved", notes: "Flagship solitaire, four-prong head." }
     ],
-
-    stoneCostTables: [
-      {
-        id: "SC-001",
-        stoneType: "Diamond",
-        shape: "Round",
-        size: "1.00ct",
-        quality: "G/VS1",
-        cost: 5400,
-        currency: "USD",
-        supplier: "Stargem",
-        effectiveDate: "2026-01-15"
-      },
-      {
-        id: "SC-002",
-        stoneType: "Diamond",
-        shape: "Cushion",
-        size: "1.50ct",
-        quality: "F/VS2",
-        cost: 8900,
-        currency: "USD",
-        supplier: "Stargem",
-        effectiveDate: "2026-01-15"
-      },
-      {
-        id: "SC-003",
-        stoneType: "Sapphire",
-        shape: "Oval",
-        size: "1.20ct",
-        quality: "AAA Blue",
-        cost: 1200,
-        currency: "USD",
-        supplier: "Ceylon Gems",
-        effectiveDate: "2026-02-01"
-      },
-      {
-        id: "SC-004",
-        stoneType: "Diamond",
-        shape: "Round",
-        size: "0.25ct",
-        quality: "G/SI1",
-        cost: 320,
-        currency: "USD",
-        supplier: "Mumbai Diamonds",
-        effectiveDate: "2026-03-10"
-      }
-    ],
-
+    stoneCostTables: [],
     labourCostTemplates: [
-      {
-        id: "LB-001",
-        templateName: "Solitaire Ring - Mumbai",
-        factory: "Mumbai",
-        metalType: "18K Gold",
-        labourSteps: "Casting, Setting, Polishing, QC",
-        baseLabourCost: 45,
-        stoneSettingCost: 25,
-        finishingCost: 15,
-        currency: "USD",
-        notes: ""
-      },
-      {
-        id: "LB-002",
-        templateName: "Halo Ring - Bangkok",
-        factory: "Bangkok",
-        metalType: "18K White Gold",
-        labourSteps: "Casting, Pave setting, Halo setting, Rhodium",
-        baseLabourCost: 60,
-        stoneSettingCost: 55,
-        finishingCost: 22,
-        currency: "USD",
-        notes: "Pave step adds significant labour."
-      },
-      {
-        id: "LB-003",
-        templateName: "Stud Earrings - Mumbai",
-        factory: "Mumbai",
-        metalType: "14K Gold",
-        labourSteps: "Casting, Setting, Polishing",
-        baseLabourCost: 22,
-        stoneSettingCost: 12,
-        finishingCost: 8,
-        currency: "USD",
-        notes: ""
-      }
+      { id: "LB-001", templateName: "Solitaire Ring - Mumbai", factory: "Mumbai", metalType: "18K Gold", labourSteps: "Casting, Setting, Polishing, QC", baseLabourCost: 45, stoneSettingCost: 25, finishingCost: 15, currency: "USD", notes: "" }
     ],
-
     productDevelopment: [
-      {
-        projectId: "PD-2001",
-        productName: "Classic Solitaire 1.00ct - YG",
-        relatedMasterId: "MD-1001",
-        status: "Approved",
-        assignedFactory: "Mumbai",
-        targetLaunchDate: "2026-06-01",
-        notes: "First yellow gold variant.",
-        linkedSpecifications: "SP-001",
-        linkedProducts: "SKU-RING-0001"
-      },
-      {
-        projectId: "PD-2002",
-        productName: "Halo Cushion 1.50ct - Plat",
-        relatedMasterId: "MD-1002",
-        status: "Prototype",
-        assignedFactory: "Bangkok",
-        targetLaunchDate: "2026-08-15",
-        notes: "Awaiting prototype review.",
-        linkedSpecifications: "SP-002",
-        linkedProducts: ""
-      },
-      {
-        projectId: "PD-2003",
-        productName: "Tennis Stud 0.25ct - WG",
-        relatedMasterId: "MD-1003",
-        status: "CAD",
-        assignedFactory: "Mumbai",
-        targetLaunchDate: "2026-09-30",
-        notes: "CAD revisions in progress.",
-        linkedSpecifications: "SP-003",
-        linkedProducts: ""
-      },
-      {
-        projectId: "PD-2004",
-        productName: "Aurora Drop Pendant",
-        relatedMasterId: "MD-1004",
-        status: "Idea",
-        assignedFactory: "",
-        targetLaunchDate: "",
-        notes: "Concept only. Master design retired.",
-        linkedSpecifications: "",
-        linkedProducts: ""
-      }
+      { projectId: "PD-2001", productName: "Classic Solitaire 1.00ct - YG", relatedMasterId: "MD-1001", status: "Approved", assignedFactory: "Mumbai", targetLaunchDate: "2026-06-01", notes: "First yellow gold variant.", linkedSpecifications: "SP-001", linkedProducts: "SKU-RING-0001" }
     ],
-
     specifications: [
-      {
-        specId: "SP-001",
-        specName: "Solitaire YG Standard",
-        metal: "Gold",
-        color: "Yellow",
-        karat: "18K",
-        stoneQuality: "G/VS1",
-        finish: "High Polish",
-        engravingAllowed: "Yes",
-        sizingRules: "Sizes 4-9, half sizes allowed",
-        factoryRestrictions: "Mumbai only",
-        notes: ""
-      },
-      {
-        specId: "SP-002",
-        specName: "Halo Platinum Premium",
-        metal: "Platinum",
-        color: "White",
-        karat: "PT950",
-        stoneQuality: "F/VS2",
-        finish: "Rhodium polish",
-        engravingAllowed: "Yes",
-        sizingRules: "Sizes 5-8",
-        factoryRestrictions: "Bangkok",
-        notes: "Premium tier."
-      },
-      {
-        specId: "SP-003",
-        specName: "Stud WG Everyday",
-        metal: "Gold",
-        color: "White",
-        karat: "14K",
-        stoneQuality: "G/SI1",
-        finish: "High polish",
-        engravingAllowed: "No",
-        sizingRules: "N/A",
-        factoryRestrictions: "Mumbai",
-        notes: ""
-      }
+      { specId: "SP-001", specName: "Solitaire YG Standard", metal: "Gold", color: "Yellow", karat: "18K", stoneQuality: "G/VS1", finish: "High Polish", engravingAllowed: "Yes", sizingRules: "Sizes 4-9, half sizes allowed", factoryRestrictions: "Mumbai only", notes: "" }
     ],
-
     products: [
-      {
-        sku: "SKU-RING-0001",
-        relatedMasterId: "MD-1001",
-        productName: "Classic Solitaire 1.00ct YG",
-        metal: "Gold",
-        color: "Yellow",
-        karat: "18K",
-        centerStoneSize: "1.00ct",
-        stoneQuality: "G/VS1",
-        estimatedWeight: 4.2,
-        calculatedCost: 5950,
-        status: "Active",
-        notes: ""
-      },
-      {
-        sku: "SKU-RING-0002",
-        relatedMasterId: "MD-1001",
-        productName: "Classic Solitaire 1.00ct WG",
-        metal: "Gold",
-        color: "White",
-        karat: "18K",
-        centerStoneSize: "1.00ct",
-        stoneQuality: "G/VS1",
-        estimatedWeight: 4.3,
-        calculatedCost: 6020,
-        status: "Active",
-        notes: ""
-      },
-      {
-        sku: "SKU-RING-0003",
-        relatedMasterId: "MD-1002",
-        productName: "Halo Cushion 1.50ct Plat",
-        metal: "Platinum",
-        color: "White",
-        karat: "PT950",
-        centerStoneSize: "1.50ct",
-        stoneQuality: "F/VS2",
-        estimatedWeight: 5.6,
-        calculatedCost: 9740,
-        status: "Draft",
-        notes: ""
-      },
-      {
-        sku: "SKU-EAR-0010",
-        relatedMasterId: "MD-1003",
-        productName: "Tennis Stud 0.25ct WG",
-        metal: "Gold",
-        color: "White",
-        karat: "14K",
-        centerStoneSize: "0.25ct",
-        stoneQuality: "G/SI1",
-        estimatedWeight: 1.4,
-        calculatedCost: 480,
-        status: "Archived",
-        notes: ""
-      }
+      { sku: "SKU-RING-0001", relatedMasterId: "MD-1001", productName: "Classic Solitaire 1.00ct YG", metal: "Gold", color: "Yellow", karat: "18K", centerStoneSize: "1.00ct", stoneQuality: "G/VS1", estimatedWeight: 4.2, calculatedCost: 5950, status: "Active", notes: "" }
     ]
   };
 

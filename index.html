@@ -47,9 +47,14 @@
           dataKey: "masterDesigns"
         },
         "stone-cost-tables": {
-          title: "Stone Cost Tables",
-          desc: "Reference costs for diamonds and gemstones by shape, size and quality.",
-          dataKey: "stoneCostTables"
+          title: "Stone Costs",
+          desc: "Matrix-driven stone costing by type, shape, size and quality columns.",
+          dataKey: "stoneCosts"
+        },
+        "stone-setup": {
+          title: "Stone Setup",
+          desc: "Reference data for categories, types, shapes, sizes, statuses and markups.",
+          dataKey: "stoneSetup", countPath: "types"
         },
         "labour-cost-templates": {
           title: "Labour Cost Templates",
@@ -77,7 +82,9 @@
       var html = App.MODULES.filter(function (m) { return m.key !== "dashboard"; })
         .map(function (m) {
           var meta = DESCRIPTIONS[m.key] || { title: m.label, desc: "", dataKey: null };
-          var count = meta.dataKey ? Storage.load(meta.dataKey).length : 0;
+          var source = meta.dataKey ? Storage.load(meta.dataKey) : [];
+          if (meta.countPath && source && source[meta.countPath]) source = source[meta.countPath];
+          var count = Array.isArray(source) ? source.length : Object.keys(source || {}).length;
           return (
             '<a class="card-link" href="' + m.path + 'index.html">' +
             '<div class="card">' +

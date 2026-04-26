@@ -10,25 +10,57 @@
     <div class="app">
       <div id="topbar"></div>
 
-      <main class="main">
+      <main class="main wide-main">
         <div class="page-header">
           <div>
             <h1>Master Designs</h1>
-            <p>The library of approved jewelry designs.</p>
+            <p>Source-of-truth library for parent jewelry design templates. Products are generated from approved Master Designs.</p>
           </div>
           <div style="display:flex; gap:8px;">
             <button class="btn btn-ghost" id="reset-btn">Reset</button>
-            <button class="btn btn-primary" id="add-btn">Add design</button>
+            <button class="btn btn-primary" id="add-btn">Add Master Design</button>
           </div>
         </div>
 
-        <div class="toolbar">
-          <input
-            id="search"
-            class="input grow"
-            type="search"
-            placeholder="Search by ID, name, collection, category..."
-          />
+        <div class="filters">
+          <div class="filters-row">
+            <input
+              id="search"
+              class="input grow"
+              type="search"
+              placeholder="Search by Master ID, style code, design name, collection, category, type..."
+            />
+          </div>
+          <div class="filters-row">
+            <label class="filter-field">
+              <span>Status</span>
+              <select id="filter-status" class="select">
+                <option value="">All</option>
+                <option>Draft</option>
+                <option>In Review</option>
+                <option>Approved</option>
+                <option>Active</option>
+                <option>Retired</option>
+              </select>
+            </label>
+            <label class="filter-field">
+              <span>Collection</span>
+              <select id="filter-collection" class="select"></select>
+            </label>
+            <label class="filter-field">
+              <span>Category</span>
+              <select id="filter-category" class="select"></select>
+            </label>
+            <label class="filter-field">
+              <span>Type</span>
+              <select id="filter-type" class="select"></select>
+            </label>
+            <label class="filter-field">
+              <span>Center Shape</span>
+              <select id="filter-center-shape" class="select"></select>
+            </label>
+            <button class="btn btn-ghost" id="clear-filters" type="button">Clear</button>
+          </div>
         </div>
 
         <div class="table-wrap">
@@ -36,13 +68,15 @@
             <thead>
               <tr>
                 <th>Master ID</th>
-                <th>Style code</th>
-                <th>Design name</th>
+                <th>Style Code</th>
+                <th>Design Name</th>
                 <th>Collection</th>
                 <th>Category</th>
-                <th>Center stone</th>
+                <th>Type</th>
+                <th>Center Stone</th>
                 <th>Status</th>
-                <th></th>
+                <th>Last Updated</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="list-body"></tbody>
@@ -54,13 +88,13 @@
       <div id="footer"></div>
     </div>
 
-    <dialog id="form-dialog">
+    <dialog id="form-dialog" class="dialog-wide">
       <div class="dialog-header">
         <h2 id="dialog-title">Add Master Design</h2>
       </div>
       <form id="form">
         <div class="dialog-body">
-          <div class="form-grid"></div>
+          <div id="form-sections"></div>
         </div>
         <div class="dialog-footer">
           <button type="button" class="btn btn-ghost" id="form-cancel">Cancel</button>

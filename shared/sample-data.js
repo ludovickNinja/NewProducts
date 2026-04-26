@@ -208,7 +208,225 @@
     markupProfiles: markupProfiles,
     stoneChangeLog: [],
     masterDesigns: [
-      { masterId: "MD-1001", styleCode: "ENG-SOL-01", designName: "Classic Solitaire", collection: "Heritage", category: "Engagement Ring", centerStoneShape: "Round", centerStoneSize: "1.00ct", sideStoneConfiguration: "None", approvedFactories: "Mumbai, Bangkok", allowedMetals: "18K Gold, Platinum", status: "Approved", notes: "Flagship solitaire, four-prong head." }
+      {
+        masterId: "MD-1001",
+        styleCode: "ENG-SOL-01",
+        designName: "Classic Solitaire",
+        brandProgram: "Heritage House",
+        collection: "Heritage",
+        category: "Engagement Ring",
+        type: "Solitaire",
+        internalDescription: "Four-prong round solitaire with knife-edge shank.",
+        tags: ["classic", "solitaire", "round"],
+
+        status: "Approved",
+        approvalRequired: "Yes",
+        approvedBy: "A. Patel",
+        approvalDate: "2026-01-10",
+        reviewNotes: "Approved for global rollout.",
+        exceptionNotes: "",
+
+        centerStone: {
+          hasCenterStone: "Yes",
+          shape: "Round",
+          sizeLogic: "Size Range",
+          carat: 1,
+          millimeterSize: "6.5",
+          settingStyle: "Prong",
+          numberOfProngs: "4",
+          notes: "Center stone supplied per order."
+        },
+
+        stoneGroups: [],
+
+        designSpecs: {
+          shankBottomWidth: "1.8",
+          shankTopWidth: "2.2",
+          shankThickness: "1.6",
+          shoulderWidth: "2.4",
+          headHeight: "6.0",
+          galleryHeight: "5.2",
+          minimumFingerSize: "4",
+          maximumFingerSize: "9",
+          sizingRule: "Standard Sizing",
+          toleranceNotes: "+/- 0.05mm on shank.",
+          cadNotes: "Maintain knife-edge profile.",
+          qcNotes: "Check prong symmetry."
+        },
+
+        metalRules: {
+          allowedKarats: ["14K", "18K", "Platinum"],
+          allowedColors: ["Yellow", "White", "Rose", "Platinum"],
+          restrictedMetals: "Silver",
+          defaultPrototypeMetal: "Silver",
+          finishOptions: ["High Polish", "Rhodium"],
+          notes: "Rhodium plate all white gold pieces."
+        },
+
+        manufacturing: {
+          productionMethod: "Casting",
+          approvedFactories: "Mumbai, Bangkok",
+          factoryRestrictions: "",
+          masterAvailability: "Selected Factories",
+          complexityLevel: "Standard",
+          productionNotes: ""
+        },
+
+        costingLinks: {
+          labourCostTemplateId: "LB-001",
+          stoneCostRuleId: "",
+          metalWeightBasis: "Estimated Weight",
+          estimatedBaseWeight: "4.2",
+          costingStatus: "Estimated",
+          weightNotes: "Weight excludes center stone."
+        },
+
+        files: {
+          thumbnailUrl: "",
+          cadFileUrl: "",
+          stl3dmFileUrl: "",
+          renderImageUrl: "",
+          waxPhotoUrl: "",
+          productionSamplePhotoUrl: "",
+          specSheetUrl: ""
+        },
+
+        changeLog: [
+          {
+            changeDate: "2026-01-10",
+            changedBy: "A. Patel",
+            changeType: "Approval Update",
+            changeDescription: "Initial approval for production.",
+            previousValue: "Draft",
+            newValue: "Approved"
+          }
+        ],
+
+        lastUpdated: "2026-01-10T09:00:00.000Z"
+      },
+      {
+        masterId: "MD-1002",
+        styleCode: "ENG-HALO-01",
+        designName: "Halo Pave",
+        brandProgram: "Modern Line",
+        collection: "Modern",
+        category: "Engagement Ring",
+        type: "Halo",
+        internalDescription: "Round center with single-row pave halo and pave shank.",
+        tags: ["halo", "pave"],
+
+        status: "In Review",
+        approvalRequired: "Yes",
+        approvedBy: "",
+        approvalDate: "",
+        reviewNotes: "Awaiting CAD revision.",
+        exceptionNotes: "",
+
+        centerStone: {
+          hasCenterStone: "Yes",
+          shape: "Round",
+          sizeLogic: "Size Range",
+          carat: 1,
+          millimeterSize: "6.5",
+          settingStyle: "Prong",
+          numberOfProngs: "4",
+          notes: ""
+        },
+
+        stoneGroups: [
+          {
+            groupName: "Halo",
+            stoneCategory: "Diamond",
+            shape: "Round",
+            quantity: 18,
+            sizeMm: "1.2",
+            caratWeight: 0.18,
+            qualityDefault: "G/VS",
+            settingStyle: "Prong",
+            spacingRule: "Even",
+            required: "Yes",
+            notes: ""
+          },
+          {
+            groupName: "Shank Pave",
+            stoneCategory: "Diamond",
+            shape: "Round",
+            quantity: 22,
+            sizeMm: "1.0",
+            caratWeight: 0.15,
+            qualityDefault: "G/VS",
+            settingStyle: "Prong",
+            spacingRule: "Even",
+            required: "No",
+            notes: "Optional on smaller finger sizes."
+          }
+        ],
+
+        designSpecs: {
+          shankBottomWidth: "1.8",
+          shankTopWidth: "2.4",
+          shankThickness: "1.6",
+          shoulderWidth: "2.6",
+          headHeight: "6.5",
+          galleryHeight: "5.5",
+          minimumFingerSize: "4",
+          maximumFingerSize: "8.5",
+          sizingRule: "Limited Sizing",
+          toleranceNotes: "",
+          cadNotes: "",
+          qcNotes: ""
+        },
+
+        metalRules: {
+          allowedKarats: ["14K", "18K"],
+          allowedColors: ["Yellow", "White", "Rose"],
+          restrictedMetals: "",
+          defaultPrototypeMetal: "Silver",
+          finishOptions: ["High Polish", "Rhodium"],
+          notes: ""
+        },
+
+        manufacturing: {
+          productionMethod: "Casting",
+          approvedFactories: "Mumbai",
+          factoryRestrictions: "Mumbai only for first 6 months.",
+          masterAvailability: "Internal Only",
+          complexityLevel: "Complex",
+          productionNotes: ""
+        },
+
+        costingLinks: {
+          labourCostTemplateId: "",
+          stoneCostRuleId: "",
+          metalWeightBasis: "Estimated Weight",
+          estimatedBaseWeight: "3.6",
+          costingStatus: "Needs Review",
+          weightNotes: ""
+        },
+
+        files: {
+          thumbnailUrl: "",
+          cadFileUrl: "",
+          stl3dmFileUrl: "",
+          renderImageUrl: "",
+          waxPhotoUrl: "",
+          productionSamplePhotoUrl: "",
+          specSheetUrl: ""
+        },
+
+        changeLog: [
+          {
+            changeDate: "2026-04-12",
+            changedBy: "L. Chen",
+            changeType: "CAD Update",
+            changeDescription: "Adjusted halo proportions.",
+            previousValue: "",
+            newValue: ""
+          }
+        ],
+
+        lastUpdated: "2026-04-12T15:20:00.000Z"
+      }
     ],
     stoneCostTables: [],
     labourCostTemplates: [

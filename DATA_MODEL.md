@@ -8,22 +8,73 @@ the fields below.
 
 ### 1. Master Designs (`masterDesigns`)
 
-The library of approved jewelry designs.
+Source-of-truth library of parent jewelry design templates. A Master Design
+is **not** a final SKU; Products reference one via `relatedMasterId`. Records
+use a nested structure that is intentionally backend-friendly. Most
+enumerations (shapes, karats, finishes, etc.) are inlined in the module today
+but should eventually be sourced from the Specifications module.
 
-| Field                    | Type   | Notes                                    |
-| ------------------------ | ------ | ---------------------------------------- |
-| `masterId`               | string | **Primary key**, e.g. `MD-1001`.         |
-| `styleCode`              | string | Internal style code.                     |
-| `designName`             | string | Human-readable name.                     |
-| `collection`             | string | Free text.                               |
-| `category`               | string | Ring, Earring, Pendant, etc.             |
-| `centerStoneShape`       | string |                                          |
-| `centerStoneSize`        | string | e.g. `1.00ct`.                           |
-| `sideStoneConfiguration` | string |                                          |
-| `approvedFactories`      | string | Comma-separated factory names.           |
-| `allowedMetals`          | string | Comma-separated metal types.             |
-| `status`                 | string | `Draft` \| `Approved` \| `Retired`.      |
-| `notes`                  | string | Free text.                               |
+#### Top-level fields
+
+| Field                | Type     | Notes                                               |
+| -------------------- | -------- | --------------------------------------------------- |
+| `masterId`           | string   | **Primary key**, e.g. `MD-1001`. Auto-generated when blank. |
+| `styleCode`          | string   | Internal style code.                                |
+| `designName`         | string   | Human-readable name. Required.                      |
+| `brandProgram`       | string   | Brand or program label.                             |
+| `collection`         | string   |                                                     |
+| `category`           | string   | Ring, Earring, Pendant, etc.                        |
+| `type`               | string   | Solitaire, Halo, Three-stone, etc.                  |
+| `internalDescription`| string   |                                                     |
+| `tags`               | string[] | Free-form tags.                                     |
+| `status`             | string   | `Draft` \| `In Review` \| `Approved` \| `Active` \| `Retired`. |
+| `approvalRequired`   | string   | `Yes` \| `No`.                                      |
+| `approvedBy`         | string   |                                                     |
+| `approvalDate`       | string   | ISO date.                                           |
+| `reviewNotes`        | string   |                                                     |
+| `exceptionNotes`     | string   |                                                     |
+| `lastUpdated`        | string   | ISO timestamp, set automatically.                   |
+
+#### Nested objects
+
+`centerStone` — `hasCenterStone`, `shape`, `sizeLogic`, `carat`,
+`millimeterSize`, `settingStyle`, `numberOfProngs`, `notes`.
+
+`designSpecs` — `shankBottomWidth`, `shankTopWidth`, `shankThickness`,
+`shoulderWidth`, `headHeight`, `galleryHeight`, `minimumFingerSize`,
+`maximumFingerSize`, `sizingRule`, `toleranceNotes`, `cadNotes`, `qcNotes`.
+
+`metalRules` — `allowedKarats[]`, `allowedColors[]`, `restrictedMetals`,
+`defaultPrototypeMetal`, `finishOptions[]`, `notes`.
+
+`manufacturing` — `productionMethod`, `approvedFactories`,
+`factoryRestrictions`, `masterAvailability`, `complexityLevel`,
+`productionNotes`.
+
+`costingLinks` — `labourCostTemplateId` (FK → `labourCostTemplates.id`),
+`stoneCostRuleId`, `metalWeightBasis`, `estimatedBaseWeight`,
+`costingStatus`, `weightNotes`.
+
+`files` — `thumbnailUrl`, `cadFileUrl`, `stl3dmFileUrl`, `renderImageUrl`,
+`waxPhotoUrl`, `productionSamplePhotoUrl`, `specSheetUrl`.
+
+#### Arrays
+
+`stoneGroups[]` — each entry: `groupName`, `stoneCategory`, `shape`,
+`quantity`, `sizeMm`, `caratWeight`, `qualityDefault`, `settingStyle`,
+`spacingRule`, `required`, `notes`.
+
+`changeLog[]` — each entry: `changeDate`, `changedBy`, `changeType`
+(`CAD Update` \| `Stone Update` \| `Factory Update` \| `Approval Update` \|
+`Costing Update` \| `Specification Update`), `changeDescription`,
+`previousValue`, `newValue`. Workflow actions (Send for Review, Approve,
+Mark Active, Retire) auto-append entries.
+
+#### Module actions
+
+The module supports: Add, Edit, Duplicate, Create Product from Master, Send
+for Review, Approve, Mark Active, Retire, and Delete. Delete is blocked when
+any `products` record references the master via `relatedMasterId`.
 
 ### 2. Stone Cost Tables (`stoneCostTables`)
 

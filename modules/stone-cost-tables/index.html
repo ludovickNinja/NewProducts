@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stone Cost Tables &middot; NewProducts</title>
+    <link rel="stylesheet" href="../../assets/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div id="topbar"></div>
+
+      <main class="main">
+        <div class="page-header">
+          <div>
+            <h1>Stone Cost Tables</h1>
+            <p>Reference costs for diamonds and gemstones.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost" id="reset-btn">Reset</button>
+            <button class="btn btn-primary" id="add-btn">Add stone cost</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="search"
+            class="input grow"
+            type="search"
+            placeholder="Search by stone, shape, supplier..."
+          />
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Stone</th>
+                <th>Shape</th>
+                <th>Size</th>
+                <th>Quality</th>
+                <th>Cost</th>
+                <th>Supplier</th>
+                <th>Effective</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="list-body"></tbody>
+          </table>
+          <div class="empty" id="list-empty" style="display:none"></div>
+        </div>
+      </main>
+
+      <div id="footer"></div>
+    </div>
+
+    <dialog id="form-dialog">
+      <div class="dialog-header">
+        <h2 id="dialog-title">Add Stone Cost</h2>
+      </div>
+      <form id="form">
+        <div class="dialog-body">
+          <div class="form-grid"></div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-ghost" id="form-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="../../shared/sample-data.js"></script>
+    <script src="../../shared/storage.js"></script>
+    <script src="../../assets/app.js"></script>
+    <script src="stone-cost-tables.js"></script>
+  </body>
+</html>

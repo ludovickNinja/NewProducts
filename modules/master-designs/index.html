@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Master Designs &middot; NewProducts</title>
+    <link rel="stylesheet" href="../../assets/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div id="topbar"></div>
+
+      <main class="main">
+        <div class="page-header">
+          <div>
+            <h1>Master Designs</h1>
+            <p>The library of approved jewelry designs.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost" id="reset-btn">Reset</button>
+            <button class="btn btn-primary" id="add-btn">Add design</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="search"
+            class="input grow"
+            type="search"
+            placeholder="Search by ID, name, collection, category..."
+          />
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Master ID</th>
+                <th>Style code</th>
+                <th>Design name</th>
+                <th>Collection</th>
+                <th>Category</th>
+                <th>Center stone</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="list-body"></tbody>
+          </table>
+          <div class="empty" id="list-empty" style="display:none"></div>
+        </div>
+      </main>
+
+      <div id="footer"></div>
+    </div>
+
+    <dialog id="form-dialog">
+      <div class="dialog-header">
+        <h2 id="dialog-title">Add Master Design</h2>
+      </div>
+      <form id="form">
+        <div class="dialog-body">
+          <div class="form-grid"></div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-ghost" id="form-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="../../shared/sample-data.js"></script>
+    <script src="../../shared/storage.js"></script>
+    <script src="../../assets/app.js"></script>
+    <script src="master-designs.js"></script>
+  </body>
+</html>

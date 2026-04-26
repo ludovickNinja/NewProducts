@@ -39,14 +39,18 @@ A module page is the smallest unit. It contains:
 - `modules/<name>/<name>.js` - calls `App.renderNav(...)`, `App.renderFooter()`
   and `App.crudPage(config)` with the schema for that module.
 
-`App.crudPage(config)` (in `assets/app.js`) drives search, add, edit, delete
-and the modal form. To add a column or field, edit only the module's JS file.
+`App.crudPage(config)` (in `assets/app.js`) drives search, filters, add, edit,
+delete and the modal form. To add a column, field or filter, edit only the
+module's JS file.
 
 ## When extending
 
 - Need a new field? Add it to the module's `fields` config and (if it should
   show in the table) the `columns` config. Update sample data and
   `DATA_MODEL.md`.
+- Need a new filter? Add it to the module's `filters` config as
+  `{ key, label }`. The dropdown options are auto-derived from the live data
+  for that field, so no extra wiring is needed.
 - Need a new module? Copy an existing module folder, register it in
   `App.MODULES` (in `assets/app.js`), seed it in `shared/sample-data.js`,
   and add a card on the dashboard.

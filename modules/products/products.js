@@ -24,6 +24,13 @@
       "sku", "productName", "relatedMasterId",
       "metal", "color", "karat", "status"
     ],
+    filters: [
+      { key: "status", label: "Status" },
+      { key: "metal", label: "Metal" },
+      { key: "color", label: "Color" },
+      { key: "karat", label: "Karat" },
+      { key: "relatedMasterId", label: "Master design" }
+    ],
     columns: [
       { key: "sku" },
       { key: "productName" },

@@ -10,6 +10,12 @@
     idField: "id",
     itemLabel: "Stone Cost",
     searchKeys: ["id", "stoneType", "shape", "size", "quality", "supplier"],
+    filters: [
+      { key: "stoneType", label: "Stone" },
+      { key: "shape", label: "Shape" },
+      { key: "supplier", label: "Supplier" },
+      { key: "currency", label: "Currency" }
+    ],
     columns: [
       { key: "stoneType" },
       { key: "shape", dim: true },

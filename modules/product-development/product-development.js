@@ -24,6 +24,11 @@
       "projectId", "productName", "relatedMasterId",
       "assignedFactory", "status", "notes"
     ],
+    filters: [
+      { key: "status", label: "Status" },
+      { key: "assignedFactory", label: "Factory" },
+      { key: "relatedMasterId", label: "Master design" }
+    ],
     columns: [
       { key: "projectId" },
       { key: "productName" },

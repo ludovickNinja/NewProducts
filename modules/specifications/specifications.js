@@ -10,6 +10,11 @@
     idField: "specId",
     itemLabel: "Specification",
     searchKeys: ["specId", "specName", "metal", "color", "karat", "finish"],
+    filters: [
+      { key: "metal", label: "Metal" },
+      { key: "color", label: "Color" },
+      { key: "karat", label: "Karat" }
+    ],
     columns: [
       { key: "specId" },
       { key: "specName" },

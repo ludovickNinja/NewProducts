@@ -13,6 +13,11 @@
       "masterId", "styleCode", "designName", "collection",
       "category", "centerStoneShape", "status"
     ],
+    filters: [
+      { key: "status", label: "Status" },
+      { key: "collection", label: "Collection" },
+      { key: "category", label: "Category" }
+    ],
     columns: [
       { key: "masterId" },
       { key: "styleCode", dim: true },

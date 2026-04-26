@@ -17,6 +17,11 @@
     idField: "id",
     itemLabel: "Labour Template",
     searchKeys: ["id", "templateName", "factory", "metalType", "labourSteps"],
+    filters: [
+      { key: "factory", label: "Factory" },
+      { key: "metalType", label: "Metal" },
+      { key: "currency", label: "Currency" }
+    ],
     columns: [
       { key: "templateName" },
       { key: "factory", dim: true },

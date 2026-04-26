@@ -106,7 +106,8 @@
 
   /* ---- CRUD page helper ----
    * Each module page calls App.crudPage(config). The helper wires up the
-   * search bar, Add button, table rendering, modal form, and delete flow.
+   * search bar, filter dropdowns, Add button, table rendering, modal form,
+   * and delete flow.
    *
    * config = {
    *   storeKey:   string  (key in SAMPLE_DATA / Storage)
@@ -114,7 +115,9 @@
    *   itemLabel:  string  ("Master Design")
    *   columns:    [{ key, label, render?, badge? }]
    *   fields:     [{ key, label, type, options?, full?, required?, step? }]
-   *   searchKeys: [string]  fields scanned by the search box
+   *   searchKeys: [string]   fields scanned by the search box
+   *   filters:    [{ key, label }]   optional dropdown filters; values are
+   *                                  auto-derived from current data.
    * }
    */
   function crudPage(config) {
@@ -129,16 +132,111 @@
     var dialogTitle = document.getElementById("dialog-title");
     var cancelBtn = document.getElementById("form-cancel");
 
-    var state = { all: [], filter: "", editingId: null };
+    var state = { all: [], filter: "", filters: {}, editingId: null };
+    var filterSelects = {};
+    var clearBtn = null;
+
+    function setupFilters() {
+      if (!config.filters || !config.filters.length) return;
+      var toolbar = searchEl.parentElement;
+
+      config.filters.forEach(function (f) {
+        var sel = document.createElement("select");
+        sel.className = "select filter-select";
+        sel.setAttribute("data-filter-key", f.key);
+        sel.addEventListener("change", function () {
+          state.filters[f.key] = sel.value;
+          updateClearVisibility();
+          render();
+        });
+        toolbar.appendChild(sel);
+        filterSelects[f.key] = sel;
+        state.filters[f.key] = "";
+      });
+
+      clearBtn = document.createElement("button");
+      clearBtn.type = "button";
+      clearBtn.className = "btn btn-ghost btn-sm";
+      clearBtn.id = "filters-clear";
+      clearBtn.textContent = "Clear filters";
+      clearBtn.style.display = "none";
+      clearBtn.addEventListener("click", function () {
+        state.filter = "";
+        searchEl.value = "";
+        Object.keys(state.filters).forEach(function (k) {
+          state.filters[k] = "";
+          if (filterSelects[k]) filterSelects[k].value = "";
+        });
+        updateClearVisibility();
+        render();
+      });
+      toolbar.appendChild(clearBtn);
+    }
+
+    function refreshFilterOptions() {
+      if (!config.filters) return;
+      config.filters.forEach(function (f) {
+        var sel = filterSelects[f.key];
+        if (!sel) return;
+
+        var seen = {};
+        var values = [];
+        state.all.forEach(function (row) {
+          var v = row[f.key];
+          if (v === undefined || v === null || v === "") return;
+          var s = String(v);
+          if (!seen[s]) { seen[s] = true; values.push(s); }
+        });
+        values.sort(function (a, b) { return a.localeCompare(b); });
+
+        var current = state.filters[f.key] || "";
+        var label = f.label || f.key;
+        var opts = '<option value="">' + escapeHtml(label) + ': all</option>' +
+          values.map(function (v) {
+            var selAttr = v === current ? " selected" : "";
+            return '<option value="' + escapeHtml(v) + '"' + selAttr + ">" +
+              escapeHtml(v) + "</option>";
+          }).join("");
+        sel.innerHTML = opts;
+
+        // If the previously selected value no longer exists, fall back to all.
+        if (current && values.indexOf(current) === -1) {
+          state.filters[f.key] = "";
+          sel.value = "";
+        }
+      });
+    }
+
+    function anyFilterActive() {
+      if (state.filter) return true;
+      return Object.keys(state.filters).some(function (k) { return !!state.filters[k]; });
+    }
+
+    function updateClearVisibility() {
+      if (clearBtn) clearBtn.style.display = anyFilterActive() ? "" : "none";
+    }
 
     function refresh() {
       state.all = Storage.load(config.storeKey);
+      refreshFilterOptions();
+      updateClearVisibility();
       render();
+    }
+
+    function matchesFilters(row) {
+      var keys = Object.keys(state.filters);
+      for (var i = 0; i < keys.length; i++) {
+        var v = state.filters[keys[i]];
+        if (!v) continue;
+        if (String(row[keys[i]]) !== v) return false;
+      }
+      return true;
     }
 
     function render() {
       var q = state.filter.trim().toLowerCase();
       var rows = state.all.filter(function (row) {
+        if (!matchesFilters(row)) return false;
         if (!q) return true;
         return config.searchKeys.some(function (k) {
           var v = row[k];
@@ -150,9 +248,13 @@
       if (rows.length === 0) {
         listEl.innerHTML = "";
         emptyEl.style.display = "block";
-        emptyEl.textContent = state.all.length === 0
-          ? "No records yet. Click “Add” to create one."
-          : "No matches for “" + q + "”.";
+        if (state.all.length === 0) {
+          emptyEl.textContent = "No records yet. Click “Add” to create one.";
+        } else if (anyFilterActive()) {
+          emptyEl.textContent = "No matches for the current search and filters.";
+        } else {
+          emptyEl.textContent = "No matches.";
+        }
         return;
       }
       emptyEl.style.display = "none";
@@ -254,6 +356,7 @@
 
     searchEl.addEventListener("input", debounce(function () {
       state.filter = searchEl.value;
+      updateClearVisibility();
       render();
     }, 80));
 
@@ -295,6 +398,7 @@
       closeDialog();
     });
 
+    setupFilters();
     refresh();
   }
 

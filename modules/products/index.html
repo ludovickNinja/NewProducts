@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Products &middot; NewProducts</title>
+    <link rel="stylesheet" href="../../assets/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div id="topbar"></div>
+
+      <main class="main">
+        <div class="page-header">
+          <div>
+            <h1>Products</h1>
+            <p>Final SKUs, linked to a master design.</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-ghost" id="reset-btn">Reset</button>
+            <button class="btn btn-primary" id="add-btn">Add product</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input
+            id="search"
+            class="input grow"
+            type="search"
+            placeholder="Search by SKU, product name, master design..."
+          />
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Product name</th>
+                <th>Master design</th>
+                <th>Metal</th>
+                <th>Center stone</th>
+                <th>Weight</th>
+                <th>Calc. cost</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="list-body"></tbody>
+          </table>
+          <div class="empty" id="list-empty" style="display:none"></div>
+        </div>
+      </main>
+
+      <div id="footer"></div>
+    </div>
+
+    <dialog id="form-dialog">
+      <div class="dialog-header">
+        <h2 id="dialog-title">Add Product</h2>
+      </div>
+      <form id="form">
+        <div class="dialog-body">
+          <div class="form-grid"></div>
+        </div>
+        <div class="dialog-footer">
+          <button type="button" class="btn btn-ghost" id="form-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="../../shared/sample-data.js"></script>
+    <script src="../../shared/storage.js"></script>
+    <script src="../../assets/app.js"></script>
+    <script src="products.js"></script>
+  </body>
+</html>

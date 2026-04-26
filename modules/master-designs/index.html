@@ -30,6 +30,10 @@
               type="search"
               placeholder="Search by Master ID, style code, design name, collection, category, type..."
             />
+            <div class="segmented" role="tablist" aria-label="View mode">
+              <button class="btn btn-sm" id="view-table" type="button">Table View</button>
+              <button class="btn btn-sm" id="view-card" type="button">Card View</button>
+            </div>
           </div>
           <div class="filters-row">
             <label class="filter-field">
@@ -63,7 +67,7 @@
           </div>
         </div>
 
-        <div class="table-wrap">
+        <div class="table-wrap" id="table-view-wrap">
           <table>
             <thead>
               <tr>
@@ -81,8 +85,10 @@
             </thead>
             <tbody id="list-body"></tbody>
           </table>
-          <div class="empty" id="list-empty" style="display:none"></div>
         </div>
+
+        <div class="master-cards" id="card-view-wrap" style="display:none"></div>
+        <div class="empty" id="list-empty" style="display:none"></div>
       </main>
 
       <div id="footer"></div>

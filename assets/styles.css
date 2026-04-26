@@ -453,3 +453,37 @@ dialog::backdrop {
     font-size: 22px;
   }
 }
+
+.wide-main { max-width: 1500px; }
+.matrix-wrap { overflow: auto; }
+.matrix-table { min-width: 1300px; }
+.sticky-col,
+.sticky-col-2 { position: sticky; background: var(--bg-elev); z-index: 2; }
+.sticky-col { left: 0; }
+.sticky-col-2 { left: 110px; }
+.slim-input,
+.slim-select { min-width: 95px; padding: 5px 8px; font-size: 12px; }
+.matrix-cell { display: flex; flex-direction: column; gap: 6px; padding: 6px; border: 1px solid var(--border); border-radius: 8px; }
+.status-priced { border-color: rgba(92, 208, 122, 0.6); }
+.status-missing { border-color: rgba(255, 107, 107, 0.7); }
+.status-not-used { border-color: rgba(160, 160, 168, 0.5); }
+.status-unavailable { border-color: rgba(90, 90, 90, 0.8); }
+.status-to-confirm { border-color: rgba(240, 193, 75, 0.8); }
+.status-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; color: var(--text-dim); }
+.status-dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; margin-right: 6px; }
+.status-dot.status-priced { background: var(--success); border: none; }
+.status-dot.status-missing { background: var(--danger); border: none; }
+.status-dot.status-not-used { background: #7f7f89; border: none; }
+.status-dot.status-unavailable { background: #2e2e35; border: none; }
+.status-dot.status-to-confirm { background: var(--warn); border: none; }
+.check-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim); }
+.segmented { display: inline-flex; gap: 6px; }
+.section-card { margin-bottom: 16px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.chip { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--bg-elev-2); border: 1px solid var(--border-strong); margin: 2px; font-size: 11px; }
+.quality-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.quality-row { display: grid; grid-template-columns: minmax(120px, 1fr) 1fr 1fr; gap: 8px; align-items: center; }
+
+@media (max-width: 800px) {
+  .quality-row { grid-template-columns: 1fr; }
+}

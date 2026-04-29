@@ -37,15 +37,22 @@ but should eventually be sourced from the Specifications module.
 
 #### Nested objects
 
-`centerStone` — `hasCenterStone`, `shape`, `sizeLogic`, `carat`,
-`millimeterSize`, `settingStyle`, `numberOfProngs`, `notes`.
+`centerStone` — `required` (boolean), `count` (`1` or `2`), `stones[]`.
+
+Each `stones[]` entry: `label`, `shape`, `sizeLogic`
+(`Fixed Size` \| `Size Range` \| `Custom Per Order`), `carat`, `millimeter`,
+`settingStyle` (`Prong` \| `Bezel` \| `Basket` \| `Cathedral` \| `Peg Head`
+\| `Semi-Bezel` \| `Tension-Style` \| `Flush` \| `Custom`), `prongCount`
+(`0` \| `2` \| `3` \| `4` \| `5` \| `6` \| `8` \| `Other`), `notes`.
+
+When `required` is `false`, the Center Stone section is hidden in the form
+and rendered as `None` in summaries. Metal, karat, color, and finish
+availability are intentionally **not** modeled at the Master Design level —
+they live in the Product Creation Matrix workflow.
 
 `designSpecs` — `shankBottomWidth`, `shankTopWidth`, `shankThickness`,
 `shoulderWidth`, `headHeight`, `galleryHeight`, `minimumFingerSize`,
 `maximumFingerSize`, `sizingRule`, `toleranceNotes`, `cadNotes`, `qcNotes`.
-
-`metalRules` — `allowedKarats[]`, `allowedColors[]`, `restrictedMetals`,
-`defaultPrototypeMetal`, `finishOptions[]`, `notes`.
 
 `manufacturing` — `productionMethod`, `approvedFactories`,
 `factoryRestrictions`, `masterAvailability`, `complexityLevel`,
@@ -60,15 +67,41 @@ but should eventually be sourced from the Specifications module.
 
 #### Arrays
 
-`stoneGroups[]` — each entry: `groupName`, `stoneCategory`, `shape`,
-`quantity`, `sizeMm`, `caratWeight`, `qualityDefault`, `settingStyle`,
-`spacingRule`, `required`, `notes`.
+`stoneGroups[]` — each entry: `groupName`, `stoneCategory`
+(`Diamond` \| `Lab Diamond` \| `Gemstone` \| `Moissanite` \| `Other`),
+`shape`, `sizeMm`, `caratWeight`, `qualityDefault`, `settingStyle`
+(`Pavé` \| `Shared Prong` \| `Channel` \| `Bezel` \| `Burnish` \|
+`Fishtail` \| `Flush` \| `Prong` \| `Custom`), `required` (boolean),
+`countLogic` (`Fixed Count` \| `Count by Finger Size Range` \|
+`Count by Length/Dimension` \| `Custom / Manual`), `fixedCount`,
+`sizeRanges[]`, `notes`.
+
+Each `sizeRanges[]` entry: `fromSize`, `toSize`, `stoneCount`, `notes`.
+`fromSize` must be smaller than `toSize`; `stoneCount` is required when the
+group uses `Count by Finger Size Range`.
 
 `changeLog[]` — each entry: `changeDate`, `changedBy`, `changeType`
 (`CAD Update` \| `Stone Update` \| `Factory Update` \| `Approval Update` \|
 `Costing Update` \| `Specification Update`), `changeDescription`,
 `previousValue`, `newValue`. Workflow actions (Send for Review, Approve,
 Mark Active, Retire) auto-append entries.
+
+#### View modes and persistence
+
+The list page supports a Table View and a Card View. The selected mode is
+saved to `localStorage` under `newproducts:masterDesigns:viewMode`. Filter
+state is saved under `newproducts:masterDesigns:filters`. Both views share
+the same search/filter pipeline.
+
+#### Backward compatibility
+
+Records loaded from `localStorage` are migrated on read:
+
+- Legacy `centerStone` (with `hasCenterStone`, flat fields) becomes the new
+  `{ required, count, stones[] }` shape.
+- Legacy `metalRules` is dropped from the working object.
+- Legacy `stoneGroups[]` entries with a `quantity` (and no `countLogic`)
+  become `countLogic: "Fixed Count"` with `fixedCount` populated.
 
 #### Module actions
 

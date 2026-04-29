@@ -60,10 +60,14 @@
               <select id="filter-center-shape" class="select"></select>
             </label>
             <button class="btn btn-ghost" id="clear-filters" type="button">Clear</button>
+            <div class="view-toggle" role="tablist" aria-label="View mode">
+              <button class="btn btn-sm view-toggle-btn" data-view="table" type="button">Table View</button>
+              <button class="btn btn-sm view-toggle-btn" data-view="card" type="button">Card View</button>
+            </div>
           </div>
         </div>
 
-        <div class="table-wrap">
+        <div id="view-table" class="table-wrap">
           <table>
             <thead>
               <tr>
@@ -83,6 +87,9 @@
           </table>
           <div class="empty" id="list-empty" style="display:none"></div>
         </div>
+
+        <div id="view-cards" class="md-cards" style="display:none"></div>
+        <div class="empty" id="cards-empty" style="display:none"></div>
       </main>
 
       <div id="footer"></div>

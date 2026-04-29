@@ -227,14 +227,20 @@
         exceptionNotes: "",
 
         centerStone: {
-          hasCenterStone: "Yes",
-          shape: "Round",
-          sizeLogic: "Size Range",
-          carat: 1,
-          millimeterSize: "6.5",
-          settingStyle: "Prong",
-          numberOfProngs: "4",
-          notes: "Center stone supplied per order."
+          required: true,
+          count: 1,
+          stones: [
+            {
+              label: "Center Stone 1",
+              shape: "Round",
+              sizeLogic: "Size Range",
+              carat: 1,
+              millimeter: "6.5",
+              settingStyle: "Basket",
+              prongCount: "4",
+              notes: "Center stone supplied per order."
+            }
+          ]
         },
 
         stoneGroups: [],
@@ -252,15 +258,6 @@
           toleranceNotes: "+/- 0.05mm on shank.",
           cadNotes: "Maintain knife-edge profile.",
           qcNotes: "Check prong symmetry."
-        },
-
-        metalRules: {
-          allowedKarats: ["14K", "18K", "Platinum"],
-          allowedColors: ["Yellow", "White", "Rose", "Platinum"],
-          restrictedMetals: "Silver",
-          defaultPrototypeMetal: "Silver",
-          finishOptions: ["High Polish", "Rhodium"],
-          notes: "Rhodium plate all white gold pieces."
         },
 
         manufacturing: {
@@ -323,14 +320,20 @@
         exceptionNotes: "",
 
         centerStone: {
-          hasCenterStone: "Yes",
-          shape: "Round",
-          sizeLogic: "Size Range",
-          carat: 1,
-          millimeterSize: "6.5",
-          settingStyle: "Prong",
-          numberOfProngs: "4",
-          notes: ""
+          required: true,
+          count: 1,
+          stones: [
+            {
+              label: "Center Stone 1",
+              shape: "Round",
+              sizeLogic: "Size Range",
+              carat: 1,
+              millimeter: "6.5",
+              settingStyle: "Prong",
+              prongCount: "4",
+              notes: ""
+            }
+          ]
         },
 
         stoneGroups: [
@@ -338,26 +341,33 @@
             groupName: "Halo",
             stoneCategory: "Diamond",
             shape: "Round",
-            quantity: 18,
             sizeMm: "1.2",
             caratWeight: 0.18,
             qualityDefault: "G/VS",
-            settingStyle: "Prong",
-            spacingRule: "Even",
-            required: "Yes",
+            settingStyle: "Pavé",
+            required: true,
+            countLogic: "Fixed Count",
+            fixedCount: 18,
+            sizeRanges: [],
             notes: ""
           },
           {
             groupName: "Shank Pave",
             stoneCategory: "Diamond",
             shape: "Round",
-            quantity: 22,
             sizeMm: "1.0",
             caratWeight: 0.15,
             qualityDefault: "G/VS",
-            settingStyle: "Prong",
-            spacingRule: "Even",
-            required: "No",
+            settingStyle: "Shared Prong",
+            required: false,
+            countLogic: "Count by Finger Size Range",
+            fixedCount: "",
+            sizeRanges: [
+              { fromSize: "4.50", toSize: "5.50", stoneCount: 14, notes: "" },
+              { fromSize: "5.75", toSize: "6.50", stoneCount: 16, notes: "" },
+              { fromSize: "6.75", toSize: "7.50", stoneCount: 18, notes: "" },
+              { fromSize: "7.75", toSize: "8.50", stoneCount: 20, notes: "" }
+            ],
             notes: "Optional on smaller finger sizes."
           }
         ],
@@ -375,15 +385,6 @@
           toleranceNotes: "",
           cadNotes: "",
           qcNotes: ""
-        },
-
-        metalRules: {
-          allowedKarats: ["14K", "18K"],
-          allowedColors: ["Yellow", "White", "Rose"],
-          restrictedMetals: "",
-          defaultPrototypeMetal: "Silver",
-          finishOptions: ["High Polish", "Rhodium"],
-          notes: ""
         },
 
         manufacturing: {
@@ -426,6 +427,104 @@
         ],
 
         lastUpdated: "2026-04-12T15:20:00.000Z"
+      },
+      {
+        masterId: "MD-1003",
+        styleCode: "BAND-ETN-01",
+        designName: "Eternity Band",
+        brandProgram: "Heritage House",
+        collection: "Heritage",
+        category: "Wedding Band",
+        type: "Eternity",
+        internalDescription: "Full eternity band with shared-prong rounds. Stone count varies with finger size.",
+        tags: ["band", "eternity"],
+
+        status: "Active",
+        approvalRequired: "Yes",
+        approvedBy: "A. Patel",
+        approvalDate: "2026-02-14",
+        reviewNotes: "",
+        exceptionNotes: "",
+
+        centerStone: { required: false, count: 1, stones: [] },
+
+        stoneGroups: [
+          {
+            groupName: "Band Stones",
+            stoneCategory: "Diamond",
+            shape: "Round",
+            sizeMm: "1.5",
+            caratWeight: "",
+            qualityDefault: "Lab G/H VS",
+            settingStyle: "Shared Prong",
+            required: true,
+            countLogic: "Count by Finger Size Range",
+            fixedCount: "",
+            sizeRanges: [
+              { fromSize: "4.50", toSize: "5.50", stoneCount: 14, notes: "" },
+              { fromSize: "5.75", toSize: "6.50", stoneCount: 16, notes: "" },
+              { fromSize: "6.75", toSize: "7.50", stoneCount: 18, notes: "" },
+              { fromSize: "7.75", toSize: "8.50", stoneCount: 20, notes: "" }
+            ],
+            notes: ""
+          }
+        ],
+
+        designSpecs: {
+          shankBottomWidth: "1.9",
+          shankTopWidth: "1.9",
+          shankThickness: "1.5",
+          shoulderWidth: "1.9",
+          headHeight: "",
+          galleryHeight: "",
+          minimumFingerSize: "4.5",
+          maximumFingerSize: "8.5",
+          sizingRule: "Size Affects Stone Count",
+          toleranceNotes: "",
+          cadNotes: "Stone count is finger-size driven.",
+          qcNotes: ""
+        },
+
+        manufacturing: {
+          productionMethod: "Casting",
+          approvedFactories: "Bangkok",
+          factoryRestrictions: "",
+          masterAvailability: "All Approved Factories",
+          complexityLevel: "Standard",
+          productionNotes: ""
+        },
+
+        costingLinks: {
+          labourCostTemplateId: "",
+          stoneCostRuleId: "",
+          metalWeightBasis: "Estimated Weight",
+          estimatedBaseWeight: "3.0",
+          costingStatus: "Estimated",
+          weightNotes: "Weight excludes stones."
+        },
+
+        files: {
+          thumbnailUrl: "",
+          cadFileUrl: "",
+          stl3dmFileUrl: "",
+          renderImageUrl: "",
+          waxPhotoUrl: "",
+          productionSamplePhotoUrl: "",
+          specSheetUrl: ""
+        },
+
+        changeLog: [
+          {
+            changeDate: "2026-02-14",
+            changedBy: "A. Patel",
+            changeType: "Approval Update",
+            changeDescription: "Activated for production.",
+            previousValue: "Approved",
+            newValue: "Active"
+          }
+        ],
+
+        lastUpdated: "2026-02-14T10:00:00.000Z"
       }
     ],
     stoneCostTables: [],
